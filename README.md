@@ -1,3 +1,5 @@
+https://emily4027.github.io/monster-strike-toolbox/
+
 # 🧰 怪物彈珠工具箱 (Monster Strike Toolbox)
 
 ```

@@ -55,3 +55,4 @@ JavaScript (Vanilla):
 ```
 字體使用 Google Fonts (Noto Sans TC)。
 ```
+### 本工具由 AI 協助撰寫

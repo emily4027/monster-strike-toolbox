@@ -1,0 +1,255 @@
+/* --- 全域設定 --- */
+:root {
+    --primary-color: #333;
+    --text-secondary: #666;
+    --bg-gradient-start: #f6f9fc;
+    --bg-gradient-end: #eef2f3;
+    
+    /* 果實主題色 (綠) */
+    --fruit-color: #4caf50;
+    --fruit-bg: #e8f5e9;
+    
+    /* 抽卡主題色 (藍紫) */
+    --gacha-color: #5c6bc0;
+    --gacha-bg: #e8eaf6;
+}
+
+body {
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    color: var(--primary-color);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* --- 背景動態裝飾 --- */
+.bg-decoration {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 50%);
+    animation: rotate 60s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* --- 容器佈局 --- */
+.container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 40px 20px;
+    z-index: 1;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Header --- */
+.main-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.logo-badge {
+    display: inline-block;
+    background: #333;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.main-header h1 {
+    font-size: 42px;
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-weight: 900;
+    letter-spacing: -1px;
+    text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+}
+
+.main-header p {
+    font-size: 18px;
+    color: #7f8c8d;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* --- 卡片網格 --- */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* --- 工具卡片 --- */
+.tool-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.8);
+}
+
+/* Hover 特效 */
+.tool-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
+}
+
+/* 卡片內部裝飾圓圈 */
+.card-decoration {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    opacity: 0.1;
+    transition: transform 0.5s ease;
+}
+
+.tool-card:hover .card-decoration {
+    transform: scale(1.2);
+}
+
+/* --- Icon 設計 --- */
+.icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.tool-card:hover .icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.emoji {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* --- 文字內容 --- */
+.card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.card-content h2 {
+    font-size: 24px;
+    margin: 0 0 12px 0;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.card-content p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    flex-grow: 1;
+}
+
+/* --- 按鈕 --- */
+.card-footer {
+    margin-top: auto;
+}
+
+.btn-go {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+/* --- 個別卡片配色 (果實) --- */
+.card-fruit .icon-wrapper {
+    background: var(--fruit-bg);
+    color: var(--fruit-color);
+}
+.card-fruit .card-decoration {
+    background: var(--fruit-color);
+}
+.card-fruit .btn-go {
+    background-color: #f0f0f0;
+    color: #333;
+}
+.card-fruit:hover .btn-go {
+    background-color: var(--fruit-color);
+    color: white;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+/* --- 個別卡片配色 (抽卡) --- */
+.card-gacha .icon-wrapper {
+    background: var(--gacha-bg);
+    color: var(--gacha-color);
+}
+.card-gacha .card-decoration {
+    background: var(--gacha-color);
+}
+.card-gacha .btn-go {
+    background-color: #f0f0f0;
+    color: #333;
+}
+.card-gacha:hover .btn-go {
+    background-color: var(--gacha-color);
+    color: white;
+    box-shadow: 0 5px 15px rgba(92, 107, 192, 0.3);
+}
+
+/* --- Footer --- */
+.main-footer {
+    text-align: center;
+    margin-top: 60px;
+    color: #95a5a6;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* --- RWD --- */
+@media (max-width: 600px) {
+    .main-header h1 { font-size: 32px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .container { padding: 20px; }
+}

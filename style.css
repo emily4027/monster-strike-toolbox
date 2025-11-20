@@ -265,23 +265,58 @@ body {
     min-height: 40px; /* 預留高度避免跳動 */
 }
 
+/* 🎯 重新設計的使用者資訊區塊 (膠囊狀) */
 #user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     background: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 6px 12px 6px 6px; /* 左側 padding 較小，因為有圖片 */
+    border-radius: 30px; /* 更圓潤 */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    cursor: pointer; /* 讓它看起來可點擊 */
+    transition: all 0.2s;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
+/* 懸停時的效果 */
+#user-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    background: #f9f9f9;
+}
+
+/* 使用者頭像 */
+#user-photo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover; /* 確保圖片不變形 */
+    border: 2px solid white; /* 可選：白色邊框 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 使用者名稱 */
 #user-display-name {
     font-weight: 700;
-    color: var(--gacha-color); /* 使用既有變數 */
+    color: var(--primary-color);
     font-size: 14px;
 }
 
-.auth-btn {
+/* 下拉箭頭 */
+.dropdown-arrow {
+    font-size: 12px;
+    color: #999;
+    transition: transform 0.2s;
+}
+
+#user-info:hover .dropdown-arrow {
+    color: var(--primary-color);
+    transform: translateY(1px);
+}
+
+/* 登入按鈕樣式 (保持不變) */
+.auth-btn.login {
     border: none;
     cursor: pointer;
     font-family: inherit;
@@ -293,10 +328,6 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-}
-
-/* 登入按鈕樣式 */
-.auth-btn.login {
     background-color: white;
     color: #333;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -304,18 +335,6 @@ body {
 .auth-btn.login:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* 登出按鈕樣式 */
-.auth-btn.logout {
-    background-color: #f0f0f0;
-    color: #666;
-    padding: 4px 12px;
-    font-size: 12px;
-}
-.auth-btn.logout:hover {
-    background-color: #e0e0e0;
-    color: #333;
 }
 /* ========================================= */
 /* 🎯 隱私權提示樣式 */

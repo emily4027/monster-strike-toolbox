@@ -38,9 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. 新增的 Firebase 邏輯
     // ------------------------------------------------
     const loginBtn = document.getElementById('google-login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
+    // 🎯 修改：現在點擊整個 user-info 區塊來登出
     const userInfoDiv = document.getElementById('user-info');
     const userDisplayNameSpan = document.getElementById('user-display-name');
+    const userPhotoImg = document.getElementById('user-photo'); // 🎯 新增照片元素
 
     // 等待 module script 載入完成
     setTimeout(() => {
@@ -51,12 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (user) {
                     // 已登入
                     userDisplayNameSpan.textContent = user.displayName;
+                    // 🎯 設定使用者照片 URL，若無則使用預設圖
+                    userPhotoImg.src = user.photoURL || 'https://via.placeholder.com/32';
+                    
                     loginBtn.style.display = 'none';
                     userInfoDiv.style.display = 'flex';
                     
                     // 存入 sessionStorage (供其他頁面使用)
                     sessionStorage.setItem('ms_toolbox_isLoggedIn', 'true');
                     sessionStorage.setItem('ms_toolbox_uid', user.uid);
+                    // 🎯 也儲存照片 URL
+                    sessionStorage.setItem('ms_toolbox_photoURL', user.photoURL || '');
+
                 } else {
                     // 未登入
                     loginBtn.style.display = 'inline-flex';
@@ -65,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 清除 sessionStorage
                     sessionStorage.removeItem('ms_toolbox_isLoggedIn');
                     sessionStorage.removeItem('ms_toolbox_uid');
+                    sessionStorage.removeItem('ms_toolbox_photoURL');
                 }
             });
 
@@ -76,18 +84,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     await window.signInWithPopup(window.firebaseAuth, provider);
                 } catch (error) {
                     console.error("登入失敗", error);
-                    // 🎯 新增：錯誤提示，幫助您除錯
                     alert(`登入失敗：\n${error.message}\n\n常見原因：\n1. index.html 中的 Firebase Config 未替換為真實資料。\n2. 直接使用檔案開啟 (file://)，請改用 Live Server (http://)。`);
                 }
             });
 
-            // 點擊登出
-            logoutBtn.addEventListener('click', async () => {
-                try {
-                    await window.signOut(window.firebaseAuth);
-                } catch (error) {
-                    console.error("登出失敗", error);
-                    alert(`登出失敗：${error.message}`);
+            // 🎯 修改：點擊使用者資訊區塊登出
+            userInfoDiv.addEventListener('click', async () => {
+                // 這裡可以選擇彈出確認視窗，或直接登出
+                if (confirm("確定要登出嗎？")) {
+                    try {
+                        await window.signOut(window.firebaseAuth);
+                    } catch (error) {
+                        console.error("登出失敗", error);
+                        alert(`登出失敗：${error.message}`);
+                    }
                 }
             });
             

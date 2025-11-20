@@ -317,3 +317,18 @@ body {
     background-color: #e0e0e0;
     color: #333;
 }
+/* ========================================= */
+/* 🎯 隱私權提示樣式 */
+/* ========================================= */
+.privacy-note {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #7f8c8d; /* 使用 header 裡較淡的顏色 */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+}
+.privacy-note i {
+    color: #95a5a6; /* 比文字顏色稍深一點 */
+}

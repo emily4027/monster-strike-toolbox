@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- 🎯 新增：Bootstrap Icons (僅用於登入圖示) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,6 +22,21 @@
             <div class="logo-badge">TOOLBOX</div>
             <h1>怪物彈珠工具箱</h1>
             <p>Monster Strike Utilities</p>
+
+            <!-- 🎯 新增：Google 登入區塊 (置中於 Header 內) -->
+            <div id="auth-container">
+                <!-- 修正：加入 type="button" 避免意外提交 -->
+                <button type="button" id="google-login-btn" class="auth-btn login" style="display: none;">
+                    <i class="bi bi-google"></i> 登入
+                </button>
+                
+                <div id="user-info" style="display: none;">
+                    <span id="user-display-name"></span>
+                    <button type="button" id="logout-btn" class="auth-btn logout">登出</button>
+                </div>
+            </div>
+            <!-- 🎯 結束 -->
+
         </header>
 
         <div class="card-grid">
@@ -60,6 +77,33 @@
             <p>&copy; 2025 Monster Strike Toolbox</p>
         </footer>
     </div>
+
+    <!-- 🎯 引入 Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        
+        // ⚠️⚠️⚠️ 這是您從 Firebase 控制台複製的真實設定 ⚠️⚠️⚠️
+        const firebaseConfig = {
+            // 已填入您的真實配置
+            apiKey: "AIzaSyAjpfcNC4ZniqIxYzgYwp5Cs_8gbbmflVY",
+            authDomain: "ms-toolbox-web.firebaseapp.com",
+            projectId: "ms-toolbox-web",
+            storageBucket: "ms-toolbox-web.firebasestorage.app",
+            messagingSenderId: "777818785736",
+            appId: "1:777818785736:web:880b878f4a510132dfe2fd",
+            measurementId: "G-7KV0FSL1RG" // 雖然登入不需用到，但保留完整性
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        window.firebaseAuth = auth;
+        window.GoogleAuthProvider = GoogleAuthProvider;
+        window.signInWithPopup = signInWithPopup;
+        window.signOut = signOut;
+        window.onAuthStateChanged = onAuthStateChanged;
+    </script>
 
     <!-- 引入 JavaScript -->
     <script src="script.js"></script>

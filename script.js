@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. 新增的 Firebase 邏輯
     // ------------------------------------------------
     const loginBtn = document.getElementById('google-login-btn');
-    // 🎯 修改：現在點擊整個 user-info 區塊來登出
     const userInfoDiv = document.getElementById('user-info');
     const userDisplayNameSpan = document.getElementById('user-display-name');
-    const userPhotoImg = document.getElementById('user-photo'); // 🎯 新增照片元素
+    const userPhotoImg = document.getElementById('user-photo'); 
+    const privacyNote = document.getElementById('privacy-note'); // 🎯 取得隱私權提示元素
 
     // 等待 module script 載入完成
     setTimeout(() => {
@@ -52,21 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (user) {
                     // 已登入
                     userDisplayNameSpan.textContent = user.displayName;
-                    // 🎯 設定使用者照片 URL，若無則使用預設圖
                     userPhotoImg.src = user.photoURL || 'https://via.placeholder.com/32';
                     
                     loginBtn.style.display = 'none';
+                    privacyNote.style.display = 'none'; // 🎯 登入後隱藏提示
                     userInfoDiv.style.display = 'flex';
                     
                     // 存入 sessionStorage (供其他頁面使用)
                     sessionStorage.setItem('ms_toolbox_isLoggedIn', 'true');
                     sessionStorage.setItem('ms_toolbox_uid', user.uid);
-                    // 🎯 也儲存照片 URL
                     sessionStorage.setItem('ms_toolbox_photoURL', user.photoURL || '');
 
                 } else {
                     // 未登入
                     loginBtn.style.display = 'inline-flex';
+                    privacyNote.style.display = 'flex'; // 🎯 未登入時顯示提示
                     userInfoDiv.style.display = 'none';
                     
                     // 清除 sessionStorage
@@ -88,9 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // 🎯 修改：點擊使用者資訊區塊登出
+            // 點擊使用者資訊區塊登出
             userInfoDiv.addEventListener('click', async () => {
-                // 這裡可以選擇彈出確認視窗，或直接登出
                 if (confirm("確定要登出嗎？")) {
                     try {
                         await window.signOut(window.firebaseAuth);
@@ -105,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Firebase 尚未初始化完成");
             // 顯示登入按鈕作為預設
             loginBtn.style.display = 'inline-flex';
+            privacyNote.style.display = 'flex';
         }
     }, 500);
 });

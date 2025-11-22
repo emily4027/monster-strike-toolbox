@@ -17,6 +17,11 @@
     <!-- 背景裝飾 -->
     <div class="bg-decoration"></div>
 
+    <!-- 🎯 新增：Github 專案角落連結 -->
+    <a href="https://github.com/emily4027/monster-strike-toolbox" target="_blank" class="github-link" title="前往 Github 專案原始碼">
+        <i class="bi bi-github"></i>
+    </a>
+
     <div class="container">
         <header class="main-header">
             <div class="logo-badge">TOOLBOX</div>
@@ -38,13 +43,6 @@
                 </div>
             </div>
             <!-- 🎯 結束 -->
-
-            <!-- 🎯 新增提示 -->
-             
-            <p class="privacy-note">
-                <i class="bi bi-info-circle-fill"></i>
-                登入僅用於雲端儲存您的工具資料，電子郵件不會公開。
-            </p>
 
         </header>
 
@@ -92,6 +90,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
         
+        // ⚠️ 您的 Firebase 配置
         const firebaseConfig = {
             apiKey: "AIzaSyAjpfcNC4ZniqIxYzgYwp5Cs_8gbbmflVY",
             authDomain: "ms-toolbox-web.firebaseapp.com",

@@ -35,44 +35,72 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('%c 怪物彈珠工具箱 %c Ready ', 'background: #333; color: #fff; border-radius: 3px 0 0 3px; padding: 2px 5px;', 'background: #4caf50; color: #fff; border-radius: 0 3px 3px 0; padding: 2px 5px;');
     
     // ------------------------------------------------
-    // 2. 新增的 Firebase 邏輯
+    // 2. Firebase 邏輯 (優化版：優先讀取本地快取)
     // ------------------------------------------------
     const loginBtn = document.getElementById('google-login-btn');
     const userInfoDiv = document.getElementById('user-info');
     const userDisplayNameSpan = document.getElementById('user-display-name');
     const userPhotoImg = document.getElementById('user-photo'); 
-    const privacyNote = document.getElementById('privacy-note'); // 🎯 取得隱私權提示元素
+    const privacyNote = document.getElementById('privacy-note');
 
-    // 等待 module script 載入完成
+    // 🟢 優化步驟 A：一載入頁面，先檢查 sessionStorage
+    // 這樣使用者不用等 Firebase 初始化，就能馬上看到登入狀態，避免按鈕閃爍
+    const cachedIsLoggedIn = sessionStorage.getItem('ms_toolbox_isLoggedIn') === 'true';
+    
+    if (cachedIsLoggedIn) {
+        console.log("讀取 sessionStorage 快取：已登入");
+        // 從快取讀取資料
+        const cachedName = sessionStorage.getItem('ms_toolbox_displayName');
+        const cachedPhoto = sessionStorage.getItem('ms_toolbox_photoURL');
+
+        // 立即更新 UI
+        userDisplayNameSpan.textContent = cachedName || '使用者';
+        userPhotoImg.src = cachedPhoto || 'https://via.placeholder.com/32';
+        
+        loginBtn.style.display = 'none';
+        privacyNote.style.display = 'none';
+        userInfoDiv.style.display = 'flex';
+    } else {
+        // 若沒登入，顯示預設狀態
+        loginBtn.style.display = 'inline-flex';
+        privacyNote.style.display = 'flex';
+        userInfoDiv.style.display = 'none';
+    }
+
+    // 🟢 優化步驟 B：Firebase 初始化與狀態同步
+    // 這裡的 setTimeout 是為了等待 module script 載入 window.firebaseAuth
     setTimeout(() => {
         if (window.firebaseAuth) {
             
-            // 監聽登入狀態
+            // 監聽登入狀態 (這是最終的權威狀態)
+            // 如果 SessionStorage 說已登入，但這裡發現 Token 過期，會自動修正 UI 回未登入
             window.onAuthStateChanged(window.firebaseAuth, (user) => {
                 if (user) {
-                    // 已登入
+                    // Firebase 確認已登入 -> 更新 UI (確保資料是最新的)
                     userDisplayNameSpan.textContent = user.displayName;
                     userPhotoImg.src = user.photoURL || 'https://via.placeholder.com/32';
                     
                     loginBtn.style.display = 'none';
-                    privacyNote.style.display = 'none'; // 🎯 登入後隱藏提示
+                    privacyNote.style.display = 'none';
                     userInfoDiv.style.display = 'flex';
                     
-                    // 存入 sessionStorage (供其他頁面使用)
+                    // 🟢 更新 sessionStorage (多存一個 displayName)
                     sessionStorage.setItem('ms_toolbox_isLoggedIn', 'true');
                     sessionStorage.setItem('ms_toolbox_uid', user.uid);
                     sessionStorage.setItem('ms_toolbox_photoURL', user.photoURL || '');
+                    sessionStorage.setItem('ms_toolbox_displayName', user.displayName || ''); // 新增：儲存名字
 
                 } else {
-                    // 未登入
+                    // Firebase 確認未登入 -> 清除 UI
                     loginBtn.style.display = 'inline-flex';
-                    privacyNote.style.display = 'flex'; // 🎯 未登入時顯示提示
+                    privacyNote.style.display = 'flex';
                     userInfoDiv.style.display = 'none';
                     
                     // 清除 sessionStorage
                     sessionStorage.removeItem('ms_toolbox_isLoggedIn');
                     sessionStorage.removeItem('ms_toolbox_uid');
                     sessionStorage.removeItem('ms_toolbox_photoURL');
+                    sessionStorage.removeItem('ms_toolbox_displayName');
                 }
             });
 
@@ -93,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (confirm("確定要登出嗎？")) {
                     try {
                         await window.signOut(window.firebaseAuth);
+                        // 登出時，UI 更新會由上面的 onAuthStateChanged 自動觸發
                     } catch (error) {
                         console.error("登出失敗", error);
                         alert(`登出失敗：${error.message}`);
@@ -102,9 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } else {
             console.log("Firebase 尚未初始化完成");
-            // 顯示登入按鈕作為預設
-            loginBtn.style.display = 'inline-flex';
-            privacyNote.style.display = 'flex';
+            // 如果完全沒有 Firebase，且沒有快取，才顯示預設按鈕
+            if (!cachedIsLoggedIn) {
+                loginBtn.style.display = 'inline-flex';
+                privacyNote.style.display = 'flex';
+            }
         }
     }, 500);
 });

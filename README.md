@@ -11,7 +11,7 @@
 | 工具 | 說明 | 連結 |
 |------|------|------|
 | 🍏 果實分配計算機 | 管理角色果實配置、計算庫存需求 | [前往](https://emily4027.github.io/monster-strike-fruit-assign/)（[原始碼](https://github.com/emily4027/monster-strike-fruit-assign)） |
-| 📊 抽卡統計工具 | 紀錄抽卡結果 | [前往](https://emily4027.github.io/monster-strike-gacha/) |
+| 📊 抽卡統計工具 | 紀錄抽卡結果 | [前往](https://emily4027.github.io/monster-strike-gacha/)（[原始碼](https://github.com/emily4027/monster-strike-gacha)） |
 
 ---
 

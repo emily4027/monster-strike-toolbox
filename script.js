@@ -68,10 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 🟢 優化步驟 B：Firebase 初始化與狀態同步
-    // 這裡的 setTimeout 是為了等待 module script 載入 window.firebaseAuth
-    setTimeout(() => {
+    // module script 載入 window.firebaseAuth 的時間不固定，每 100ms 檢查一次，最多等 5 秒
+    function waitForFirebase(retries = 0) {
         if (window.firebaseAuth) {
-            
+
             // 監聽登入狀態 (這是最終的權威狀態)
             // 如果 SessionStorage 說已登入，但這裡發現 Token 過期，會自動修正 UI 回未登入
             window.onAuthStateChanged(window.firebaseAuth, (user) => {
@@ -129,13 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             
+        } else if (retries < 50) {
+            setTimeout(() => waitForFirebase(retries + 1), 100);
         } else {
-            console.log("Firebase 尚未初始化完成");
+            console.warn("Firebase SDK 載入超時");
             // 如果完全沒有 Firebase，且沒有快取，才顯示預設按鈕
             if (!cachedIsLoggedIn) {
                 loginBtn.style.display = 'inline-flex';
                 privacyNote.style.display = 'flex';
             }
         }
-    }, 500);
+    }
+    waitForFirebase();
 });

@@ -79,7 +79,7 @@ python -m http.server 8000     # 然後開啟 http://localhost:8000
 - **CSS3**：CSS 變數、Grid / Flexbox、`@keyframes` 動畫、媒體查詢。
 - **JavaScript**：原生 Vanilla JS，無需建置工具。
 - **外部資源（CDN）**：
-  - Firebase Authentication SDK (9.23.0)
+  - Firebase Authentication SDK (11.6.1)
   - Bootstrap Icons (1.11.3)
   - Google Fonts：Noto Sans TC
 

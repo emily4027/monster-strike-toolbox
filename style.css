@@ -277,6 +277,16 @@ body {
     cursor: pointer; /* 讓它看起來可點擊 */
     transition: all 0.2s;
     border: 1px solid rgba(0,0,0,0.05);
+    /* 改成 <button> 後，清掉瀏覽器預設的按鈕字體樣式 */
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+#user-info:focus-visible,
+.auth-btn.login:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 /* 懸停時的效果 */
@@ -294,6 +304,19 @@ body {
     object-fit: cover; /* 確保圖片不變形 */
     border: 2px solid white; /* 可選：白色邊框 */
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 沒有頭像或頭像載入失敗時的預設圖示 */
+.user-photo-fallback {
+    font-size: 32px;
+    line-height: 1;
+    color: #b0b8bf;
+    display: inline-flex;
+}
+
+#user-photo[hidden],
+.user-photo-fallback[hidden] {
+    display: none;
 }
 
 /* 使用者名稱 */
@@ -332,9 +355,16 @@ body {
     color: #333;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-.auth-btn.login:hover {
+.auth-btn.login:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Firebase 載入失敗時停用登入按鈕 */
+.auth-btn.login:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: none;
 }
 
 /* ========================================= */
@@ -385,4 +415,10 @@ body {
 
 .privacy-note i {
     font-size: 14px;
+}
+
+/* Firebase 載入失敗時，隱私權提示改顯示錯誤訊息 */
+.privacy-note.is-error {
+    color: #d35400;
+    opacity: 1;
 }

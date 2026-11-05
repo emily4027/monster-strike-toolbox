@@ -3,6 +3,12 @@
 本專案所有重大變更都會記錄於此文件。
 格式參考 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)。
 
+## [1.2.0] - 2026-11-06
+
+### 變更 (Changed)
+- **工具卡片改由清單產生**：新增 `tools.js`，集中設定每個工具的名稱、說明、網址、圖示與主題色，首頁卡片由 `script.js` 依清單自動產生。新增工具只要在 `tools.js` 加一筆，不需要再改 `index.html` 與 `style.css`。
+- 卡片配色改用共用的 `--card-color` / `--card-bg` 變數，取代原本各工具分開的 `.card-fruit` / `.card-gacha` 樣式與 `:root` 主題色。
+
 ## [1.1.2] - 2026-11-04
 
 ### 修正 (Fixed)

@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ------------------------------------------------
+    // 0. 依 tools.js 的清單產生工具卡片
+    // ------------------------------------------------
+    const cardGrid = document.getElementById('card-grid');
+    const cardTemplate = document.getElementById('tool-card-template');
+
+    (window.MS_TOOLS || []).forEach(tool => {
+        const card = cardTemplate.content.firstElementChild.cloneNode(true);
+        card.href = tool.url;
+        card.classList.add(`card-${tool.id}`);
+        card.style.setProperty('--card-color', tool.color);
+        card.style.setProperty('--card-bg', tool.bg);
+        card.querySelector('.emoji').textContent = tool.emoji;
+        card.querySelector('h2').textContent = tool.name;
+        card.querySelector('p').textContent = tool.description;
+        cardGrid.appendChild(card);
+    });
+
+    // ------------------------------------------------
     // 1. 原有的 3D 卡片特效 (保留不動)
     // ------------------------------------------------
     const cards = document.querySelectorAll('.tool-card');

@@ -4,14 +4,7 @@
     --text-secondary: #666;
     --bg-gradient-start: #f6f9fc;
     --bg-gradient-end: #eef2f3;
-    
-    /* 果實主題色 (綠) */
-    --fruit-color: #4caf50;
-    --fruit-bg: #e8f5e9;
-    
-    /* 抽卡主題色 (藍紫) */
-    --gacha-color: #5c6bc0;
-    --gacha-bg: #e8eaf6;
+    /* 各工具的主題色改在 tools.js 設定 */
 }
 
 body {
@@ -202,40 +195,23 @@ body {
     letter-spacing: 1px;
 }
 
-/* --- 個別卡片配色 (果實) --- */
-.card-fruit .icon-wrapper {
-    background: var(--fruit-bg);
-    color: var(--fruit-color);
+/* --- 卡片配色 --- */
+/* --card-color / --card-bg 由 script.js 依 tools.js 的 color / bg 設定在每張卡片上 */
+.tool-card .icon-wrapper {
+    background: var(--card-bg);
+    color: var(--card-color);
 }
-.card-fruit .card-decoration {
-    background: var(--fruit-color);
+.tool-card .card-decoration {
+    background: var(--card-color);
 }
-.card-fruit .btn-go {
+.tool-card .btn-go {
     background-color: #f0f0f0;
     color: #333;
 }
-.card-fruit:hover .btn-go {
-    background-color: var(--fruit-color);
+.tool-card:hover .btn-go {
+    background-color: var(--card-color);
     color: white;
-    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-}
-
-/* --- 個別卡片配色 (抽卡) --- */
-.card-gacha .icon-wrapper {
-    background: var(--gacha-bg);
-    color: var(--gacha-color);
-}
-.card-gacha .card-decoration {
-    background: var(--gacha-color);
-}
-.card-gacha .btn-go {
-    background-color: #f0f0f0;
-    color: #333;
-}
-.card-gacha:hover .btn-go {
-    background-color: var(--gacha-color);
-    color: white;
-    box-shadow: 0 5px 15px rgba(92, 107, 192, 0.3);
+    box-shadow: 0 5px 15px color-mix(in srgb, var(--card-color) 30%, transparent);
 }
 
 /* --- Footer --- */

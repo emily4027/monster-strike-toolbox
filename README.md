@@ -19,7 +19,7 @@
 
 ### 🚀 整合入口
 - 卡片式導覽，點擊卡片即可前往對應工具。
-- 版面採 CSS Grid 自動排列，新增工具卡片不需要調整版面。
+- 卡片由 `tools.js` 的工具清單自動產生，版面採 CSS Grid 自動排列，新增工具不需要改 HTML 或 CSS。
 
 ### 🔐 Google 登入 (Firebase Authentication)
 - 頁首的「登入」按鈕會開啟 Google 帳號選擇視窗。
@@ -31,7 +31,7 @@
 ### 🎨 視覺與互動
 - **3D 傾斜效果**：滑鼠移到卡片上時，依游標位置計算 `rotateX / rotateY`，卡片會跟著傾斜；卡片角落的裝飾圓圈有視差位移。
 - **動態背景**：緩慢旋轉的柔光漸層，不搶視覺焦點。
-- **主題色**：果實為綠色、抽卡為藍紫色，以 CSS 變數統一管理。
+- **主題色**：果實為綠色、抽卡為藍紫色，在 `tools.js` 中設定。
 - **GitHub 連結**：右上角可前往專案原始碼。
 
 ### 📱 響應式設計 (RWD)
@@ -53,11 +53,21 @@ python -m http.server 8000     # 然後開啟 http://localhost:8000
 ```
 
 ### ➕ 新增一個工具卡片
-1. 在 `index.html` 的 `.card-grid` 內，複製一個 `.tool-card` 區塊，修改連結、`class`（例如 `card-xxx`）、圖示、標題與說明。
-2. 在 `style.css` 的 `:root` 新增主題色，例如 `--xxx-color`、`--xxx-bg`。
-3. 參考 `.card-fruit` / `.card-gacha`，新增對應的 `.card-xxx` 樣式（圖示底色、裝飾圓圈、按鈕 hover 色）。
+在 `tools.js` 的 `MS_TOOLS` 陣列多加一筆即可：
 
-3D 傾斜效果會自動套用到所有 `.tool-card`，不需修改 `script.js`。
+```js
+{
+    id: 'xxx',                 // 英文代號，卡片會帶有 card-xxx class
+    name: '新工具',              // 卡片標題
+    description: '一句話說明。', // 卡片說明
+    url: 'https://emily4027.github.io/monster-strike-xxx/',
+    emoji: '🎯',                // 卡片圖示
+    color: '#ff9800',           // 主題色：裝飾圓圈、按鈕 hover 底色
+    bg: '#fff3e0',              // 淺色底：圖示背景
+},
+```
+
+卡片樣式、配色與 3D 傾斜效果都會自動套用，不需要修改 `index.html`、`style.css` 或 `script.js`。若某張卡片需要特別的樣式，可以在 `style.css` 用 `.card-xxx` 個別調整。
 
 ---
 
@@ -65,9 +75,10 @@ python -m http.server 8000     # 然後開啟 http://localhost:8000
 
 ```
 .
-├── index.html      # 入口首頁（工具卡片、登入區塊、Firebase SDK 載入）
+├── index.html      # 入口首頁（卡片模板、登入區塊、Firebase SDK 載入）
 ├── style.css       # 樣式（CSS 變數、動畫、RWD、登入元件）
-├── script.js       # 互動腳本（3D 傾斜效果、登入狀態管理）
+├── tools.js        # 工具清單（卡片的名稱、說明、網址、圖示與主題色）
+├── script.js       # 互動腳本（產生卡片、3D 傾斜效果、登入狀態管理）
 ├── CHANGELOG.md    # 更新日誌
 └── README.md       # 專案說明
 ```
